@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+    <head>
+        <title>socket.io test</title>
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+    </head>
+    <body>
+         <h1>Chat App</h1>
+    <input id="room" placeholder="Room" />
+    <input id="msg" placeholder="Message" />
+    <button onclick="join()">Join</button>
+    <button onclick="send()">Send</button>
+    <div id="chat"></div>
+
+    <script>
+      const socket = io("http://localhost:3000"); // or 3001 for server2
+
+      function join() {
+        const room = document.getElementById('room').value;
+        socket.emit('join', room);
+      }
+
+      function send() {
+        const room = document.getElementById('room').value;
+        const msg = document.getElementById('msg').value;
+        socket.emit('message', { room, text: msg });
+      }
+
+      socket.on('message', (msg) => {
+        const chat = document.getElementById('chat');
+        const div = document.createElement('div');
+        div.innerText = msg;
+        chat.appendChild(div);
+      });
+    </script>
+    </body>
+</html>
